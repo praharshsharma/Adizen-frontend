@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-//const BASE_URL = "https://adizen-backend.onrender.com"
-const BASE_URL = "http://localhost:5001"
+const BASE_URL = "https://adizen-backend.onrender.com"
+//const BASE_URL = "http://localhost:5001"
 
 const headers = {
     "Content-Type": "application/json",
