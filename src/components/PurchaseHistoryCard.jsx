@@ -1,25 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardContent, Typography, Divider, Box } from "@mui/material";
 import { getproduct } from "../api/api";
+import { getorder } from "../api/api";
+import { useDispatch, useSelector } from "react-redux";
 
 const PurchaseHistoryCard = ({ purchase }) => {
 
-  const getProductDetail = async (id)=>{
-    const res = await getproduct(id)
-    console.log(res);
+  const { currentUser } = useSelector((state) => state.user);
 
-    setnames(name+" "+res.product.name+" ")
+  const [details,setdetails] = useState([]);
+
+  const getOrder = async (id)=>{
+    const res = await getorder({
+      email : currentUser.user.email,
+      id : id
+    })
+    console.log(res.data.products);
+    setdetails(res.data.products)
   }
 
-  const [name,setnames] = useState("");
+  
 
   useEffect(()=>{
-    console.log(purchase.products.length)
-    for(let i=0;i<purchase.products.length;i++)
-    {
-      getProductDetail(purchase.products[i].productId)
-      setnames(name+"x"+purchase.products[i].quantity)
-    }
+    getOrder(purchase._id)
     
   },[])
   return (
@@ -34,7 +37,9 @@ const PurchaseHistoryCard = ({ purchase }) => {
 
         <Box>
           <Typography variant="body2" color="text.secondary">
-            <strong>Products:</strong> {name
+            <strong>Products:</strong> {details.map(product=>(
+              `(${product.productId.name} x${product.quantity})  `
+            ))
             }
           </Typography>
           <Typography variant="body2" color="text.secondary">

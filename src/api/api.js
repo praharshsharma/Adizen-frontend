@@ -1,11 +1,13 @@
 import axios from 'axios'
 
-const BASE_URL = "https://adizen-backend.onrender.com"
+//const BASE_URL = "https://adizen-backend.onrender.com"
+const BASE_URL = "http://localhost:5001"
 
 const headers = {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "http://localhost:3000/",
     "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+    "withCredentials": true
   };
 
   async function signup(data) {
@@ -88,6 +90,9 @@ const headers = {
     return result;
   }
 
+  
+  
+
   async function gethistory(data) {
     const result = await axios.post(`${BASE_URL}/api/users/history`, data, { headers });
 
@@ -107,13 +112,25 @@ const headers = {
     return [];
   }
 
+  async function getorder(data) {
+    const result = await axios.get(`${BASE_URL}/api/order/${data.email}/${data.id}`, { headers });
+
+    console.log(result)
+  
+    if (result.status === 200) {
+      return result.data;
+    }
+  
+    return [];
+  }
+
 
 
 
 
 export default signup;
 
-export {signin,getAllProducts,addtocart,getCart,getproduct,decreseQuantity,removefromcart,order,gethistory,getUser};
+export {signin,getAllProducts,addtocart,getCart,getproduct,decreseQuantity,removefromcart,order,gethistory,getUser,getorder};
 
 
 
